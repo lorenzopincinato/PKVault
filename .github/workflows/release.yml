@@ -13,7 +13,7 @@ permissions:
   packages: write # ghcr
 
 env:
-  REGISTRY_IMAGE: ghcr.io/chnapy/pkvault
+  REGISTRY_IMAGE: ghcr.io/lorenzopincinato/pkvault
 
 jobs:
   version:
