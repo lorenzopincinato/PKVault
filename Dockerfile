@@ -125,7 +125,7 @@ COPY ./PKVault.Desktop/publishers/macos ./PKVault.Desktop/publishers/macos
 
 RUN apt-get update && \
   apt-get install -y --no-install-recommends \
-  python3 python3-pip zip curl && \
+  python3 python3-pip genisoimage curl && \
   pip3 install --break-system-packages icnsutil && \
   apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
@@ -149,10 +149,9 @@ RUN mkdir -p /app/publish-final
 
 WORKDIR /src/PKVault.Desktop/publishers/macos
 
-RUN chmod +x build-app.sh && \
+RUN chmod +x build-app.sh build-dmg.sh && \
   ./build-app.sh ${RID} ${VERSION} /app/publish /app/publish-final-app && \
-  cd /app/publish-final-app && \
-  zip -r -y /app/publish-final/pkvault-${VERSION}-${RID}.app.zip PKVault.app
+  ./build-dmg.sh ${VERSION}-${RID} /app/publish-final-app/PKVault.app /app/publish-final
 
 FROM desktop-publish AS desktop-publish-linux-base
 
