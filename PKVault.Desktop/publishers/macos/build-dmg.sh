@@ -15,9 +15,11 @@ DMG_PATH="$OUT_DIR/pkvault-$VERSION.dmg"
 echo "=== Building pkvault-$VERSION.dmg ==="
 
 STAGING_DIR=$(mktemp -d)/dmg-root
-mkdir -p "$STAGING_DIR"
+mkdir -p "$STAGING_DIR/.background"
 cp -r "$APP_DIR" "$STAGING_DIR/PKVault.app"
 ln -s /Applications "$STAGING_DIR/Applications"
+cp "$SCRIPT_DIR/dmg-assets/background.png" "$STAGING_DIR/.background/background.png"
+cp "$SCRIPT_DIR/dmg-assets/DS_Store" "$STAGING_DIR/.DS_Store"
 
 rm -f "$DMG_PATH"
 
