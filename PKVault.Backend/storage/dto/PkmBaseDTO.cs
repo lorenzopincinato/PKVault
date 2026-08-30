@@ -63,7 +63,7 @@ public abstract record PkmBaseDTO(
 
     public uint TID => Pkm.TID;
     public uint? SID => Pkm.SID;
-    public string OriginTrainerName => Pkm.OriginTrainerName;
+    public string OriginTrainerName => Pkm.GetOriginTrainerName(SettingsLanguage);
     public Gender OriginTrainerGender => Pkm.OriginTrainerGender;
     public string HandlingTrainerName => Pkm.HandlingTrainerName;
     public Gender HandlingTrainerGender => Pkm.HandlingTrainerGender;

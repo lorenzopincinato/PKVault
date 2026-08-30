@@ -258,6 +258,23 @@ public class ImmutablePKM(PKM Pkm, PKMLoadError? loadError = null)
     public DateOnly? OriginMetDate => Pkm.MetDate;
     public byte? OriginMetLevel => Pkm.MetLevel == 0 ? null : Pkm.MetLevel;
 
+    /// <summary>
+    /// Display name of the original trainer. Gen 1/2 in-game trade Pokémon store their OT
+    /// as a single sentinel byte (<see cref="StringConverter1.TradeOTCode"/>) which PKHeX
+    /// decodes to a literal "*"; resolve it to the localized "Trainer" label instead.
+    /// </summary>
+    public string GetOriginTrainerName(string language)
+    {
+        var trash = Pkm.OriginalTrainerTrash;
+        if (Pkm.Format <= 2 && trash.Length > 0 && trash[0] == StringConverter1.TradeOTCode)
+        {
+            var name = StringConverter12Transporter.GetTradeNameGen1((int)GameLanguage.GetLanguage(language));
+            if (!string.IsNullOrEmpty(name))
+                return name;
+        }
+        return Pkm.OriginalTrainerName;
+    }
+
     public string GetOriginMetLocation(string language) => GameInfo.GetStrings(language)
         .GetLocationName(Pkm.WasEgg, Pkm.MetLocation, Pkm.Format, Pkm.Generation, Pkm.Version);
 

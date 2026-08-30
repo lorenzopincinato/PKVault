@@ -253,6 +253,33 @@ public class ImmutablePKMTests : IAsyncLifetime
 
     #endregion
 
+    #region 6. Origin trainer name
+
+    [Fact]
+    public void GetOriginTrainerName_Gen1InGameTrade_ResolvesTradeSentinel()
+    {
+        var pk = new PK1 { Species = 83, Nickname = "DUX" };
+        pk.OriginalTrainerTrash.Clear();
+        pk.OriginalTrainerTrash[0] = StringConverter1.TradeOTCode;
+        pk.OriginalTrainerTrash[1] = StringConverter1.TerminatorCode;
+
+        var pkm = new ImmutablePKM(pk);
+
+        Assert.Equal("*", pk.OriginalTrainerName);
+        Assert.Equal("Trainer", pkm.GetOriginTrainerName("en"));
+        Assert.Equal("Dresseur", pkm.GetOriginTrainerName("fr"));
+    }
+
+    [Fact]
+    public void GetOriginTrainerName_NormalTrainer_Unchanged()
+    {
+        var pkm = new ImmutablePKM(new PK1 { Species = 25, OriginalTrainerName = "RED" });
+
+        Assert.Equal("RED", pkm.GetOriginTrainerName("en"));
+    }
+
+    #endregion
+
     private ImmutablePKM CreateTestPkm(ushort species, byte form = 0, uint pid = 12345, int iv_hp = 31, ushort tid = 54321)
     {
         var pk = new PK3
